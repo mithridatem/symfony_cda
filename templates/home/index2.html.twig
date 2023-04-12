@@ -8,8 +8,7 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-{% set nbr1 = 10 %}
-{% set nbr2 = 20 %}
+
 {% if nbr2 == 0 or nbr1 == 0 %}
     <p>afficher nbr1 ou nbr2 est égal à zéro</p>
 {% elseif  nbr1 > nbr2 %}
@@ -17,4 +16,5 @@
 {% elseif  nbr2 > nbr1 %}
     <p>nbr2  est le nombre le plus grand</p>
 {% endif %} 
+
 {% endblock %}
