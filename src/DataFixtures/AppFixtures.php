@@ -37,6 +37,9 @@ class AppFixtures extends Fixture
             $article->setContenu($faker->sentence(5));
             $article->setDate(new \DateTimeImmutable($faker->date('Y-m-d')));
             $article->setUser($userTab[$faker->numberBetween(0, 4)]);
+            $article->addCategory($tabCats[$faker->numberBetween(0, 2)]);
+            $article->addCategory($tabCats[$faker->numberBetween(3, 5)]);
+            $article->addCategory($tabCats[$faker->numberBetween(6, 9)]);
             $manager->persist($article);
         }
         $manager->flush();
