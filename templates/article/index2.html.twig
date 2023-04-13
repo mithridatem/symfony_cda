@@ -3,26 +3,14 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
-    <h1>version tableau indexe </h1>
-    <p>Le titre est : {{ film[0] }}</p>
-    <p>Contenu : {{ film[1] }}</p>
-    <p>Durée : {{ film[2] }} minutes</p>
-    
-    <h1>version tableau indexé boucle </h1>
-    {% for row in film %}
-        <p>{{ row }}</p>
+    {% for article in liste %}
+
+        <p>{{  article.titre }}</p>
+        <p>{{  article.id }}</p>
+        <p>{{  article.date | date('Y-m-d') }}</p>
+        <p>{{ article.user.nom | upper }} {{ article.user.prenom }}</p>
+       <p> id : {{ article.user }}</p> 
+        <p>{{ article.user.id }}</p>
+
     {% endfor %}
-
-    <h1> Version tableau associatif </h1>
-    <p>Le titre est : {{ films[0].titre }}</p>
-    <p>Contenu : {{ films[0].contenu }}</p>
-    <p>Durée : {{ films[0].duree }} minutes</p>
-
-    <h1> Version tableau associatif boucle</h1>
-    {% for row in films %}
-        <p>Le titre est : {{ row.titre }}</p>
-        <p>Contenu : {{ row.contenu }}</p>
-        <p>Durée : {{ row.duree }} minutes </p>
-    {% endfor %}
-
 {% endblock %}
