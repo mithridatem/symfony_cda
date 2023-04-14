@@ -168,6 +168,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     //Méthode toString qui afficher l'id de l'utilisateur
     public function __toString(){
-        return $this->id;
+        return $this->nom;
     }
 }

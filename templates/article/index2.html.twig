@@ -4,13 +4,14 @@
 
 {% block body %}
     {% for article in liste %}
-
         <p>{{  article.titre }}</p>
         <p>{{  article.id }}</p>
         <p>{{  article.date | date('Y-m-d') }}</p>
         <p>{{ article.user.nom | upper }} {{ article.user.prenom }}</p>
        <p> id : {{ article.user }}</p> 
         <p>{{ article.user.id }}</p>
-
+        {% for cat in article.categories %}
+            <p>{{ cat.nom }}</p>
+        {% endfor %}
     {% endfor %}
 {% endblock %}
