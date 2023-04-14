@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article{% endblock %}
+{% block title %}Article détail{% endblock %}
 
 {% block body %}
-    
+<div class="card text-white bg-success mb-3" style="max-width: 20rem;">
+    <div class="card-header">Article</div>
+    <div class="card-body">
+      <h4 class="card-title">{{ article.id }} {{ article.titre | upper }}</h4>
+      <p class="card-text">{{ article.contenu }}</p>
+      <p class="card-text">{{ article.date | date('d-m-Y')}}</p>
+      {% for cat in article.categories %}
+        <span class="badge rounded-pill bg-warning">{{cat.nom}}</span>
+      {% endfor %}
+      <p class="card-text">Auteur : {{ article.user.nom }} : {{ article.user.prenom }}</p>   
+    </div>
+  </div>
 {% endblock %}

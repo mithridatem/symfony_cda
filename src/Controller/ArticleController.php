@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleRepository;
+use App\Form\ArticleType;
 
 class ArticleController extends AbstractController
 {
@@ -25,10 +26,24 @@ class ArticleController extends AbstractController
         ]);
     }
     #[Route('/article/id/{id}', name:'app_article_id')]
-    public function showArticleById(ArticleRepository $articleRepository, $id):Response{
+    public function showArticleById(ArticleRepository $articleRepository, int $id):Response{
         //récupérer l'article depuis son id
-
+        $article = $articleRepository->find($id);
         //retourner une interface twig avec l'article récupéré
-        return new Response('article'.$id);
+        return $this->render('article/article.html.twig', [
+            'article'=> $article,
+        ]);
+    }
+
+    #[Route('/article/add', name:'app_article_add')]
+    public function addArticle():Response{
+        
+        $article = new Article();
+
+        $form = $this->createForm(ArticleType::class, $article);
+    
+        return $this->render('article/articleAdd.html.twig', [
+            'form'=> $form->createView(),
+        ]);
     }
 }

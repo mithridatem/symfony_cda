@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article{% endblock %}
+{% block title %}Tous les Articles{% endblock %}
 
 {% block body %}
+    <h3>Liste des articles :</h3>
     {# Parcourir un tableau d'objet #}
     {% for article in liste %}
     <div class="card border-primary mb-3" style="max-width: 20rem;">
@@ -11,8 +12,7 @@
           <h4 class="card-title">{{ article.titre }}</h4>
           <p class="card-text">{{ article.contenu }}</p>
           <p class="card-text">{{  article.date | date('Y-m-d') }}</p>
-          <a href="./id/{{ article.id }}"> lien</a>
-          {# <a href="{{ path('app_article_id', {'id': article.id }) }}"> lien</a> #}
+          <a href="{{ path('app_article_id', {'id': article.id }) }}"> lien path </a>
         </div>
       </div>
     {% endfor %}
