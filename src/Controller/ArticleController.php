@@ -17,11 +17,17 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/all', name:'app_article_all')]
-    public function showArticles(ArticleRepository $articleRepository):Response{
+    public function showAllArticle(ArticleRepository $articleRepository):Response{
         //récuperer dans un tableau tous les articles
         $articles = $articleRepository->findAll();
         return $this->render('article/index2.html.twig', [
             'liste'=> $articles,
         ]);
+    }
+    #[Route('/article/id/{id}', name:'app_article_id')]
+    public function showArticleById(ArticleRepository $articleRepository, $id):Response{
+        //récupérer l'article depuis son id
+
+        //retourner une interface twig avec l'article récupéré
     }
 }
