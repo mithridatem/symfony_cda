@@ -29,5 +29,6 @@ class ArticleController extends AbstractController
         //récupérer l'article depuis son id
 
         //retourner une interface twig avec l'article récupéré
+        return new Response('article'.$id);
     }
 }
