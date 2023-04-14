@@ -23,7 +23,7 @@ class ArticleType extends AbstractType
             ->add('contenu', TextareaType::class)
             ->add('date', DateType::class)
             ->add('categories', EntityType::class,
-            [
+                [
                 // looks for choices from this entity
                 'class' => Categorie::class,
                 'multiple' => true,
@@ -32,7 +32,7 @@ class ArticleType extends AbstractType
                 ]
             )
             ->add('user', EntityType::class, 
-            [
+                [
                 // looks for choices from this entity
                 'class' => User::class
                 ]
