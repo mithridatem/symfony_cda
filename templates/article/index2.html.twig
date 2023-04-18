@@ -12,7 +12,7 @@
           <h4 class="card-title">{{ article.titre }}</h4>
           <p class="card-text">{{ article.contenu }}</p>
           <p class="card-text">{{  article.date | date('Y-m-d') }}</p>
-          <a href="{{ path('app_article_id', {'id': article.id }) }}"> lien path </a>
+          <a href="{{ path('app_article_id', {'id': article.id }) }}">Détail</a>
         </div>
       </div>
     {% endfor %}

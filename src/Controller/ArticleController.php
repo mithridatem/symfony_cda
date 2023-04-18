@@ -39,7 +39,8 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/add', name:'app_article_add')]
-    public function addArticle(EntityManagerInterface $em, Request $request):Response{
+    public function addArticle(ArticleRepository $repo,
+        EntityManagerInterface $em, Request $request):Response{
         $msg = "";
         //Instance d'un objet article
         $article = new Article();
@@ -49,12 +50,20 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
         //Vérification du formulaire
         if($form->isSubmitted() AND $form->isValid()){
-            //on fait persister les données
-            $em->persist($article);
-            //on synchronise avec la BDD
-            $em->flush();
-            //gestion du message de confirmation
-            $msg = 'L\'article : '.$article->getId().' à été ajouté'; 
+            //récupérer l'article
+            $recup = $repo->findOneBy(['titre'=>$article->getTitre()]);
+            //tester si il n'existe pas
+            if(!$recup){
+                 //on fait persister les données
+                $em->persist($article);
+                //on synchronise avec la BDD
+                $em->flush();
+                //gestion du message de confirmation
+                $msg = 'L\'article : '.$article->getId().' à été ajouté'; 
+            }
+            else{
+                $msg = 'L\'article : '.$article->getTitre().' Existe déja';
+            }
         }
         //retourner l'interface twig
         return $this->render('article/articleAdd.html.twig', [

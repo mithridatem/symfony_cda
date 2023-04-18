@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter Article{% endblock %}
+{% block title %}Ajouter Categorie{% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
         {{ form_rest(form) }} 
-    {{ form_end(form) }}
+    {{ form_end(form)}}
     {% if msg is defined %}
         <p>{{ msg }}</p>
     {% endif %}

@@ -27,7 +27,7 @@ class ArticleType extends AbstractType
                 [
                 // looks for choices from this entity
                 'class' => Categorie::class,
-                'label' => 'Catégories :',
+                'label' => 'Sélectionner des Catégories :',
                 'choice_label' => 'nom',
                 'multiple' => true,
                 'expanded' => false,

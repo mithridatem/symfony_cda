@@ -12,7 +12,8 @@
       {% for cat in article.categories %}
         <span class="badge rounded-pill bg-warning">{{cat.nom}}</span>
       {% endfor %}
-      <p class="card-text">Auteur : {{ article.user.nom }} : {{ article.user.prenom }}</p>   
+      <p class="card-text">Auteur : {{ article.user.nom }} : {{ article.user.prenom }}</p>
+      <a href="{{ path('app_article_update', {'id': article.id }) }}">Update</a>
     </div>
   </div>
 {% endblock %}
