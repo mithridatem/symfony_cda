@@ -6,4 +6,9 @@ body{
 a{
     text-decoration: none;
     color: black;
+    margin-left: 1vw;
+}
+li{
+    list-style: none;
+    margin-left: 1vw;
 }

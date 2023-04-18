@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Categorie{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_rest(form) }} 
+    {{ form_end(form)}}
+    {% if msg is defined %}
+        <p>{{ msg }}</p>
+    {% endif %}
+{% endblock %}
