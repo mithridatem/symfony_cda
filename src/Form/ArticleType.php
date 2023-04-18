@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Form;
-
 use App\Entity\Article;
 use App\Entity\User;
 use App\Entity\Categorie;
@@ -29,6 +27,8 @@ class ArticleType extends AbstractType
                 [
                 // looks for choices from this entity
                 'class' => Categorie::class,
+                'label' => 'Catégories :',
+                'choice_label' => 'nom',
                 'multiple' => true,
                 'expanded' => false,
                 'required' => true
@@ -37,10 +37,11 @@ class ArticleType extends AbstractType
             ->add('user', EntityType::class, 
                 [
                 // looks for choices from this entity
-                'class' => User::class
+                'class' => User::class,
+                'label' => 'Utilisateurs :'
                 ]
                 )
-            ->add('Ajouter', SubmitType::class)
+            ->add('Envoyer', SubmitType::class)
         ;
     }
 

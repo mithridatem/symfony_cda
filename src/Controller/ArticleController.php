@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleRepository;
 use App\Entity\Article;
 use App\Form\ArticleType;
-
+use App\Service\Utils;
+use Doctrine\ORM\EntityManagerInterface;
 class ArticleController extends AbstractController
 {
     #[Route('/article', name: 'app_article')]
@@ -29,7 +31,7 @@ class ArticleController extends AbstractController
     #[Route('/article/id/{id}', name:'app_article_id')]
     public function showArticleById(ArticleRepository $articleRepository, int $id):Response{
         //récupérer l'article depuis son id
-        $article = $articleRepository->find($id);
+        $article = $articleRepository->find(Utils::cleanInputStatic($id));
         //retourner une interface twig avec l'article récupéré
         return $this->render('article/article.html.twig', [
             'article'=> $article,
@@ -37,14 +39,52 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/add', name:'app_article_add')]
-    public function addArticle():Response{
-        
+    public function addArticle(EntityManagerInterface $em, Request $request):Response{
+        $msg = "";
+        //Instance d'un objet article
         $article = new Article();
-
+        //instance du formulaire
         $form = $this->createForm(ArticleType::class, $article);
-    
+        //Récupération des datas du formulaire
+        $form->handleRequest($request);
+        //Vérification du formulaire
+        if($form->isSubmitted() AND $form->isValid()){
+            //on fait persister les données
+            $em->persist($article);
+            //on synchronise avec la BDD
+            $em->flush();
+            //gestion du message de confirmation
+            $msg = 'L\'article : '.$article->getId().' à été ajouté'; 
+        }
+        //retourner l'interface twig
         return $this->render('article/articleAdd.html.twig', [
             'form'=> $form->createView(),
+            'msg' => $msg,
+        ]);
+    }
+    #[Route('/article/update/{id}', name:'app_article_update')]
+    public function updateArticle(int $id, ArticleRepository $articleRepository, 
+        EntityManagerInterface $em, Request $request):Response{
+        $msg = "";
+        //récupération de l'objet article
+        $article = $articleRepository->find($id);
+        //instance du formulaire
+        $form = $this->createForm(ArticleType::class, $article);
+        //Récupération des datas du formulaire
+        $form->handleRequest($request);
+        //Vérification du formulaire
+        if($form->isSubmitted() AND $form->isValid()){
+            //on fait persister les données
+            $em->persist($article);
+            //on synchronise avec la BDD
+            $em->flush();
+            //gestion du message de confirmation
+            $msg = 'L\'article : '.$article->getId().' à été modifié'; 
+        }
+        //retourner l'interface twig
+        return $this->render('article/articleUpdate.html.twig', [
+            'form'=> $form->createView(),
+            'msg'=> $msg,
         ]);
     }
 }
