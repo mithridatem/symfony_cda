@@ -24,4 +24,18 @@ class ApiArticleController extends AbstractController
         'Access-Control-Allow-Origin'=> 'localhost',
         'Access-Control-Allow-Methods'=> 'GET'], ['groups'=>'article:readAll']);
     }
+
+    #[Route('/api/article/id/{id}', name:'app_api_article_id', methods:'GET')]
+    public function getArticleById(ArticleRepository $repo, int $id):Response{
+        $article = $repo->find($id);
+        if(empty($article)){
+           // dd('test');
+            return $this->json(['erreur'=>'l\'article n\'existe pas'], 206, ['Content-Type'=>'application/json',
+            'Access-Control-Allow-Origin'=> 'localhost',
+            'Access-Control-Allow-Methods'=> 'GET']);
+        }
+        return $this->json($article, 200, ['Content-Type'=>'application/json',
+        'Access-Control-Allow-Origin'=> 'localhost',
+        'Access-Control-Allow-Methods'=> 'GET'], ['groups'=>'article:id']);
+    }
 }
