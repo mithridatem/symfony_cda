@@ -11,6 +11,7 @@
               <span class="visually-hidden">(current)</span>
             </a>
           </li>
+          {# Test si l'utilisateur est connecté #}
           {% if app.user.userIdentifier is defined %}
             <li class="nav-item">
               <a class="nav-link" href="{{ path('app_article_all') }}">Articles</a>
@@ -24,6 +25,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
             </li>
+          {# Test si l'utilisateur n'est pas connecté #}
           {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{{ path('app_article_all') }}">Articles</a>
