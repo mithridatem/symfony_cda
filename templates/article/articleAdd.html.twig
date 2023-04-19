@@ -3,9 +3,11 @@
 {% block title %}Ajouter Article{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-        {{ form_rest(form) }} 
-    {{ form_end(form) }}
+    <div>
+        {{ form_start(form) }}
+            {{ form_rest(form) }} 
+        {{ form_end(form) }}
+    </div>
     {% if msg is defined %}
         <p>{{ msg }}</p>
     {% endif %}

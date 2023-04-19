@@ -11,15 +11,33 @@
               <span class="visually-hidden">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_article_all') }}">Articles</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_article_add') }}">Ajouter</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_categorie_all') }}">Categories</a>
-          </li>
+          {% if app.user.userIdentifier is defined %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_article_all') }}">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_article_add') }}">Ajouter</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_categorie_all') }}">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_article_all') }}">Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_categorie_all') }}">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+            </li>
+          {% endif %}
       </div>
     </div>
 </nav>

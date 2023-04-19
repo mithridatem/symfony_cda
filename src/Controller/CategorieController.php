@@ -29,6 +29,7 @@ class CategorieController extends AbstractController
         if($form->isSubmitted() AND $form->isValid()){
             //récupération de l'enregistrement
             $recup = $repo->findOneBy(['nom'=>$categorie->getNom()]);
+            //$data = $request->request->all('categorie')['nom'];
             //tester si la catégorie existe déja
             if(!$recup){
                 //persister les données du formulaire
