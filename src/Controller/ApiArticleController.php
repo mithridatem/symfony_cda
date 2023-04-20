@@ -59,7 +59,6 @@ class ApiArticleController extends AbstractController
             }
             //sérializer le json en tableau
             $data = $serialize->decode($json, 'json');
-
             //test si l'article existe déja
             $recup = $repo->findOneBy(['titre'=>$data['titre'], 'contenu'=>$data['contenu']]);
             //test doublon
