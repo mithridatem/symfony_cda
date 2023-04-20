@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Repository\ArticleRepository;
 use App\Repository\CategorieRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 class ApiArticleController extends AbstractController
@@ -49,7 +50,7 @@ class ApiArticleController extends AbstractController
         try{
             //récupérer le contenu de la requête
             $json = $request->getContent();
-            //test si on à un json
+            //test si on n'à pas de json
             if(!$json){
                 //renvoyer un json
                 return $this->json(['erreur'=>'Le Json est vide ou n\'existe pas'], 400, 
@@ -124,11 +125,84 @@ class ApiArticleController extends AbstractController
         //lever une exception
         catch(\Exception $e){
             //renvoyer un json
-            return $this->json(['erreur : '=>$e->getMessage()], 400, 
+            return $this->json(['erreur'=>$e->getMessage()], 400, 
             ['Content-Type'=>'application/json',
             'Access-Control-Allow-Origin'=> 'localhost',
             'Access-Control-Allow-Methods'=> 'GET'],[]);
         }
     }
-        
+
+    #[Route('/api/article/delete/{id}', name:'app_api_article_delete', methods:'DELETE')]
+    public function delArticle(int $id, ArticleRepository $repoArt,
+    EntityManagerInterface $em):Response{
+        try{
+            //tester si l'article existe
+            $article = $repoArt->find($id);
+            if(!$article){
+                //renvoyer un json
+                return $this->json(['erreur'=>'L\'article n\'existe pas en BDD'], 400, 
+                ['Content-Type'=>'application/json',
+                'Access-Control-Allow-Origin'=> 'localhost',
+                'Access-Control-Allow-Methods'=> 'GET'],[]);
+            }
+            //supprimer
+            $em->remove($article);
+            $em->flush();
+            //renvoyer un json
+            return $this->json(['erreur'=>'L\'article '.$article->getTitre().' a été supprimé en BDD'], 200, 
+            ['Content-Type'=>'application/json',
+            'Access-Control-Allow-Origin'=> 'localhost',
+            'Access-Control-Allow-Methods'=> 'GET'],[]);
+        }
+        catch(\Exception $e){
+            return $this->json(['erreur'=>$e->getMessage()], 500, 
+            ['Content-Type'=>'application/json',
+            'Access-Control-Allow-Origin'=> 'localhost',
+            'Access-Control-Allow-Methods'=> 'GET'],[]);
+        }
+    }
+
+    #[Route('/api/article/delete', name:'app_api_article_json_delete', methods:'DELETE')]
+    public function delArticleJson(ArticleRepository $repoArt, Request $request,
+    EntityManagerInterface $em, SerializerInterface $serialize):Response{
+        try{
+            //récupérer le contenu de la requête
+            $json = $request->getContent();
+            //test si on n'à pas de json
+            if(!$json){
+                //renvoyer un json
+                return $this->json(['erreur'=>'Le Json est vide ou n\'existe pas'], 400, 
+                ['Content-Type'=>'application/json',
+                'Access-Control-Allow-Origin'=> 'localhost',
+                'Access-Control-Allow-Methods'=> 'GET'],[]);
+            }
+            //transformer sérialiser le json en tableau
+            $data = $serialize->decode($json, 'json');
+            //récupérer l'article
+            $article = $repoArt->findOneBy(['titre'=>$data['titre']]);
+            //tester si l'article existe
+            if(!$article){
+                //renvoyer un json
+                return $this->json(['erreur'=>'L\'article n\'existe pas en BDD'], 400, 
+                ['Content-Type'=>'application/json',
+                'Access-Control-Allow-Origin'=> 'localhost',
+                'Access-Control-Allow-Methods'=> 'GET'],[]);
+            }
+            //supprimer
+            $em->remove($article);
+            $em->flush();
+            //renvoyer un json
+            return $this->json(['erreur'=>'L\'article '.$article->getTitre().' a été supprimé en BDD'], 200, 
+            ['Content-Type'=>'application/json',
+            'Access-Control-Allow-Origin'=> 'localhost',
+            'Access-Control-Allow-Methods'=> 'GET'],[]);
+        }
+        catch(\Exception $e){
+            return $this->json(['erreur'=>$e->getMessage()], 500, 
+            ['Content-Type'=>'application/json',
+            'Access-Control-Allow-Origin'=> 'localhost',
+            'Access-Control-Allow-Methods'=> 'GET'],[]);;
+        }
+    }
+
 }
