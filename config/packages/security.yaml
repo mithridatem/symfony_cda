@@ -31,7 +31,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+          - { path: ^/admin, roles: ROLE_ADMIN }
           - { path: ^/article/add , roles: ROLE_USER }
           - { path: ^/article/update , roles: ROLE_USER }
           - { path: ^/categorie/add , roles: ROLE_USER }
