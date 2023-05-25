@@ -172,6 +172,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     //Méthode toString qui afficher l'id de l'utilisateur
     public function __toString(){
-        return $this->nom;
+        return $this->email;
     }
 }

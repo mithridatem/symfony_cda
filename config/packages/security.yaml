@@ -36,7 +36,6 @@ security:
           - { path: ^/article/update , roles: ROLE_USER }
           - { path: ^/categorie/add , roles: ROLE_USER }
           - { path: ^/categorie/update , roles: ROLE_USER }
-
 when@test:
     security:
         password_hashers:
