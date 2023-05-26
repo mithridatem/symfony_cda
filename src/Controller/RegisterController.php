@@ -105,11 +105,11 @@ class RegisterController extends AbstractController
         $user = $repo->find($id);
         if($user){
             $objet = 'activation du compte';
-            $content = '<p>Pour activer votre compte veuillez cliquer ci-dessous
-            </p><a href="localhost:8000/activate/'.$id.'">Activer</a>';
+            $content = '<p>Pour activer votre compte veuillez cliquer ci-dessous :</p><a href="localhost:8000/register/activate/'.$id.'">Activer</a>';
             //on stocke la fonction dans une variable
             $status = $messagerie->sendEmail($login, $mdp, $objet, $content, $user->getEmail());
-            return new Response($status, 200, []);
+            //rediriger vers la fonction login et affichage de l'erreur le compte n'est pas activé
+            return $this->redirectToRoute('app_login', ['error'=>1]);
         }
         else{
             return new Response('Le compte n\'existe pas', 200, []);

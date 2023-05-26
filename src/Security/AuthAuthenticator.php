@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use App\Repository\UserRepository;
+use App\Entity\User;
 class AuthAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
@@ -31,7 +32,7 @@ class AuthAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->request->get('email', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
-
+        
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
@@ -46,9 +47,20 @@ class AuthAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
+        //récupérer le mail 
+        $email = $request->request->get('email', '');
+        //récupérer le compte
+        $recup = $this->repo->findOneBy(['email'=>$email]);
+        //tester si l'utilisateur est activé
+        if($recup->isActivate()){
+            return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        }
+        //envoyer vers la méthode envoi un mail d'activation
+        else{
+            return new RedirectResponse($this->urlGenerator->generate('app_send_activate', ['id'=>$recup->getId()]));
+        }
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        
         // return new RedirectResponse($this->urlGenerator->generate('some_route'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
