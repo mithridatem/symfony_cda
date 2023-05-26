@@ -12,11 +12,12 @@ use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Utils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Service\Messagerie;
 class RegisterController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function userAdd(EntityManagerInterface $em, UserRepository $repo,
-    Request $request, UserPasswordHasherInterface $hash):Response
+    Request $request, UserPasswordHasherInterface $hash, Messagerie $messagerie):Response
     {   
         $msg = "";
         //Instancier un objet User
@@ -33,6 +34,7 @@ class RegisterController extends AbstractController
             if($recup){
                 $msg = "Le compte : ".$user->getEmail()." existe déja";
             }
+            //test sinon le compte n'existe pas
             else{
                 //récupération du password
                 $pass = Utils::cleanInputStatic($request->request->all('user')['password']['first']);
@@ -52,7 +54,16 @@ class RegisterController extends AbstractController
                 $em->persist($user);
                 //ajoute en BDD
                 $em->flush();
+                //récupération des identifiants de messagerie
+                $login = $this->getParameter('login');
+                $mdp = $this->getParameter('mdp');
+                //variable pour le mail 
+                $objet = 'Activation de votre compte';
+                $content = '<p>Pour activer votre compte veuillez cliquer sur l\'url ci-dessous</p>
+                <a href="https://localhost:8000/register/activate/'.$user->getId().'>Activation</a>';
                 $msg = "Le compte : ".$user->getEmail()." a été ajouté en BDD";
+                //on stocke la fonction dans une variable
+                $statut = $messagerie->sendEmail($login, $mdp, $objet, $content, $email);
             }
         }
         return $this->render('register/index.html.twig', [
