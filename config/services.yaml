@@ -6,6 +6,8 @@
 parameters:
     tva: '%env(TVA)%'
     auteur: '%env(AUTEUR)%'
+    login: '%env(LOGIN)%'
+    mdp: '%env(MDP)%'
 services:
     # default configuration for services in *this* file
     _defaults:
