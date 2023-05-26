@@ -50,10 +50,12 @@ class RegisterController extends AbstractController
                 $user->setPrenom($prenom);
                 $user->setEmail($email);
                 $user->setRoles(["ROLE_USER"]);
+                //setter activation à false
+                $user->setActivate(false);
                 //persister les données
                 $em->persist($user);
                 //ajoute en BDD
-                $em->flush();
+                $em->flush(); 
                 //récupération des identifiants de messagerie
                 $login = $this->getParameter('login');
                 $mdp = $this->getParameter('mdp');
@@ -72,7 +74,7 @@ class RegisterController extends AbstractController
         ]);
     }
     #[Route('/register/activate/{id}', name: 'app_register_activate')]
-    public function activateUser($id, EntityManagerInterface $em, UserRepository $repo){
+    public function activateUser($id, EntityManagerInterface $em, UserRepository $repo):Response{
         //récupérer le compte utilisateur
         $user = $repo->find($id);
         //tester si le compte existe
@@ -81,12 +83,36 @@ class RegisterController extends AbstractController
             $em->persist($user);
             $em->flush();
             //redirection vers la connexion
-            $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_login');
         }
         //test sinon le compte n'existe pas
         else{
             //redirection vers l'inscription
-            $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_register');
+        }
+    }
+
+    //fonction qui envoi le mail d'activation
+    #[Route('/sendMail/activate/{id}', name:'app_send_activate')]
+    public function sendMailActivate(Utils $utils, 
+    Messagerie $messagerie, UserRepository $repo,$id):Response{
+        //nettoyage de l'id
+        $id = $utils->cleanInput($id);
+        //récupération des identifiant de messagerie
+        $login = $this->getParameter('login');
+        $mdp = $this->getParameter('mdp');
+        //variable qui récupére l'utilisateur
+        $user = $repo->find($id);
+        if($user){
+            $objet = 'activation du compte';
+            $content = '<p>Pour activer votre compte veuillez cliquer ci-dessous
+            </p><a href="localhost:8000/activate/'.$id.'">Activer</a>';
+            //on stocke la fonction dans une variable
+            $status = $messagerie->sendEmail($login, $mdp, $objet, $content, $user->getEmail());
+            return new Response($status, 200, []);
+        }
+        else{
+            return new Response('Le compte n\'existe pas', 200, []);
         }
     }
 }
