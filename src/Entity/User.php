@@ -42,6 +42,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class)]
     private Collection $articles;
 
+    #[ORM\Column]
+    private ?bool $activate = null;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -173,5 +176,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     //Méthode toString qui afficher l'id de l'utilisateur
     public function __toString(){
         return $this->email;
+    }
+
+    public function isActivate(): ?bool
+    {
+        return $this->activate;
+    }
+
+    public function setActivate(bool $activate): self
+    {
+        $this->activate = $activate;
+
+        return $this;
     }
 }
