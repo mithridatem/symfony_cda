@@ -4,8 +4,10 @@
 
 {% block body %}
     {{ form_start(form) }}
+        {{ form_row(form.nom)}}
+        {{ form_row(form.prenom)}}
+        {{ form_row(form.email)}}
         {{ form_row(form.password.first) }}
         {{ form_row(form.password.second) }}
-
     {{ form_end(form) }}
 {% endblock %}
