@@ -8,6 +8,7 @@ parameters:
     auteur: '%env(AUTEUR)%'
     login: '%env(LOGIN)%'
     mdp: '%env(MDP)%'
+    token: '%env(TOKEN)%'
 services:
     # default configuration for services in *this* file
     _defaults:
