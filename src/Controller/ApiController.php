@@ -66,5 +66,4 @@ class ApiController extends AbstractController
             'Access-Control-Allow-Origin'=> '*']);
         }
     }
-
 }

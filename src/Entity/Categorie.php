@@ -13,12 +13,11 @@ class Categorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('article:readAll')]
+    
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
     #[Groups('article:readAll')]
-
     private ?string $nom = null;
 
     #[ORM\ManyToMany(targetEntity: Article::class, mappedBy: 'categories')]
