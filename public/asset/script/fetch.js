@@ -1,23 +1,34 @@
 let articles = document.querySelector('#articles');
 let error = document.querySelector('#error');
-const urlRegister = 'https://localhost:8000/api/register';
-const urlArticles = 'https://localhost:8000/api/articles/get/all';
-let json = JSON.stringify(
-    {
-        email:'mathieumithridate@adrar-formation.com',password:'1234'
-    }
-);
-const token = fetch(urlRegister,{
-                    method: 'POST',
-                    body:json}
-                    ).then(async response=>{
-                            const jwt = await response.json();
-                            console.log(jwt.Token_JWT);
-                            headers = { 'Authorization': 'Bearer '+jwt.Token_JWT }
-                            fetch(urlArticles, {method:'GET', headers
-                            }).then(async response1=>{
-                               const liste = await response1.json();
-                               console.log(liste);
-                            })
-                    }
-                );
+const url = 'https://localhost:8000/api/articles/get/all';
+const headers = { 'Authorization': 'Bearer '+localStorage.getItem("jwt")}
+const token = fetch(url, {
+                            method:'GET',  
+                            headers
+                        }
+                )
+                .then(async response=>{
+                            if(response.status==400){
+                                const expired = await response.json()
+                                if(expired.Error == 'Expired token'){
+                                    location.href ='https://localhost:8000/api/localToken';
+                                }
+                                else{
+                                    error.textContent = expired.Error;
+                                }
+                            }
+                            if(response.status == 200){
+                                const liste = await response.json();
+                                console.log(liste);
+                            }
+                            //Gérer l'erreur liste vide
+                            else{
+                                const jsonResponse = await response.json();
+                                error.textContent = jsonResponse.Error;
+                            }
+                        }
+                    );
+        
+        
+                
+                            

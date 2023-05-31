@@ -36,7 +36,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
             require_once('../vendor/autoload.php');
             //Variables pour le token
             $issuedAt   = new \DateTimeImmutable();
-            $expire     = $issuedAt->modify('+2 minutes')->getTimestamp();
+            $expire     = $issuedAt->modify('+1 minutes')->getTimestamp();
             $serverName = "your.domain.name";
             $username   = $repo->findOneBy(['email'=>$mail])->getNom();
             //Contenu du token

@@ -21,7 +21,7 @@ class ApiController extends AbstractController
         //test si on n'à pas de json
         if(!$json){
             //renvoyer un json
-            return $this->json(['erreur'=>'Le Json est vide ou n\'existe pas'], 400, 
+            return $this->json(['Error'=>'Le Json est vide ou n\'existe pas'], 400, 
             ['Content-Type'=>'application/json',
             'Access-Control-Allow-Origin'=> 'localhost',
             'Access-Control-Allow-Methods'=> 'GET'],[]);
@@ -73,5 +73,9 @@ class ApiController extends AbstractController
             return $this->json(['Error'=>$verif], 400, ['Content-Type'=>'application/json',
             'Access-Control-Allow-Origin'=> '*']);
         }
+    }
+    #[Route('api/localToken', name:'app_api_local_token')]
+    public function localToken():Response{
+        return $this->render('api/local.html.twig');
     }
 }
