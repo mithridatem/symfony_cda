@@ -9,22 +9,30 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\UserRepository;
 use App\Service\ApiRegister;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 class ApiController extends AbstractController
 {
-    #[Route('/api', name: 'app_api')]
-    public function index(): Response
-    {
-        return $this->render('api/index.html.twig', [
-            'controller_name' => 'ApiController',
-        ]);
-    }
-    #[Route('/api/register', name:'app_api_register')]
+    #[Route('/api/register', name:'app_api_register', methods:'POST')]
     public function getToken(Request $request, UserRepository $repo,
-        UserPasswordHasherInterface $hash, ApiRegister $apiRegister){
-        //récupération du paramètre email
-        $mail = $request->query->get('email');
-        //récupération du paramètre password
-        $password = $request->query->get('password');
+        UserPasswordHasherInterface $hash, ApiRegister $apiRegister,
+        SerializerInterface $serialize){
+        //récupérer le json
+        $json = $request->getContent();
+        //test si on n'à pas de json
+        if(!$json){
+            //renvoyer un json
+            return $this->json(['erreur'=>'Le Json est vide ou n\'existe pas'], 400, 
+            ['Content-Type'=>'application/json',
+            'Access-Control-Allow-Origin'=> 'localhost',
+            'Access-Control-Allow-Methods'=> 'GET'],[]);
+        }
+        //transformer le json en tableau
+        $data = $serialize->decode($json, 'json');
+       
+        //récupération du mail et du password
+        $mail = $data['email'];
+        $password = $data['password']; 
+
         //test si le paramétre mail n'est pas saisi
         if(!$mail OR !$password){
             return $this->json(['Error'=>'informations absentes'], 400,['Content-Type'=>'application/json',
