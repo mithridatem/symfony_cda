@@ -10,4 +10,8 @@ class ArticlesController extends AbstractController{
     public function getAllArticles():Response{
         return $this->render('api/index.html.twig');
     }
+    #[Route('/articles/id/{id}', name:'app_articles_id')]
+    public function getArticlesId($id):Response{
+        return $this->render('api/article.html.twig',);
+    }
 }
